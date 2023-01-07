@@ -19,24 +19,13 @@ function createApp(database) {
     const age = req.query.age;
     const type = req.query.type;
     const baseCost = database.findBasePriceByType(type).cost;
-    const date = convertLegacyDateToPlainDate(parseDate(req.query.date));
+    const date = parsePlainDate(req.query.date);
     const cost = calculateCost(age, type, date, baseCost);
     res.json({ cost });
   });
 
-  function parseDate(dateString) {
-    if (dateString) {
-      return new Date(dateString);
-    }
-  }
-
-   const convertLegacyDateToPlainDate = (legacyDate) => {
-    if (legacyDate) {
-      return legacyDate
-        .toTemporalInstant()
-        .toZonedDateTimeISO(Temporal.Now.timeZone())
-        .toPlainDate();
-    }
+  function parsePlainDate(dateString) {
+    return dateString ? Temporal.PlainDate.from(dateString) : undefined;
   }
 
   function calculateCost(age, type, date, baseCost) {
@@ -92,7 +81,7 @@ function createApp(database) {
   function isHoliday(date) {
     const holidays = database.getHolidays();
     for (let row of holidays) {
-      let holiday = convertLegacyDateToPlainDate(new Date(row.holiday));
+      let holiday = parsePlainDate(row.holiday);
       if (
         date &&
         date.year === holiday.year &&
