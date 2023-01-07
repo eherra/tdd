@@ -30,7 +30,7 @@ function createApp(database) {
     }
   }
 
-   const convertDateToPlainDate = (date) => {
+   const convertLegacyDateToPlainDate = (date) => {
     if (date) {
       return date
         .toTemporalInstant()
@@ -43,7 +43,7 @@ function createApp(database) {
     if (type === "night") {
       return calculateCostForNightTicket(age, baseCost);
     } else {
-      return calculateCostForDayTicket(age, date, baseCost);
+      return calculateCostForDayTicket(age, convertLegacyDateToPlainDate(date), baseCost);
     }
   }
 
@@ -79,20 +79,20 @@ function createApp(database) {
 
   function calculateReduction(date) {
     let reduction = 0;
-    if (date && isMonday(date) && !isHoliday(convertDateToPlainDate(date))) {
+    if (date && isMonday(date) && !isHoliday(date)) {
       reduction = 35;
     }
     return reduction;
   }
 
   function isMonday(date) {
-    return convertDateToPlainDate(date).dayOfWeek === 1;
+    return date.dayOfWeek === 1;
   }
 
   function isHoliday(date) {
     const holidays = database.getHolidays();
     for (let row of holidays) {
-      let holiday = convertDateToPlainDate(new Date(row.holiday));
+      let holiday = convertLegacyDateToPlainDate(new Date(row.holiday));
       if (
         date &&
         date.year === holiday.year &&
