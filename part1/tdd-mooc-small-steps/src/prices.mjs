@@ -30,9 +30,9 @@ function createApp(database) {
     }
   }
 
-   const convertLegacyDateToPlainDate = (date) => {
-    if (date) {
-      return date
+   const convertLegacyDateToPlainDate = (legacyDate) => {
+    if (legacyDate) {
+      return legacyDate
         .toTemporalInstant()
         .toZonedDateTimeISO(Temporal.Now.timeZone())
         .toPlainDate();
