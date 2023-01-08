@@ -10,8 +10,16 @@ export class Board {
   }
 
   drop(block) {
+    this.validateGameboardEmpty()
     const middle = Math.floor(this.width / 2);
     this.gameboard[0][middle] = block.color;
+  }
+
+  validateGameboardEmpty() {
+    const hasBlocksDropping = this.gameboard.flat().some(x => x !== ".");
+    if (hasBlocksDropping) {
+      throw new Error("already falling");
+    }
   }
 
   tick() {
