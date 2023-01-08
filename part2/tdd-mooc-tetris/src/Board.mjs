@@ -19,8 +19,7 @@ export class Board {
   }
 
   validateGameboardEmpty() {
-    const hasBlocksFalling= this.gameboard.flat().some(x => x !== ".");
-    if (hasBlocksFalling) {
+    if (this.isBlockFalling) {
       throw new Error("already falling");
     }
   }
@@ -28,7 +27,7 @@ export class Board {
   tick() {
     for (let row = 0; row < this.gameboard.length; row++) {
       for (let column = 0; column < this.gameboard[row].length; column++) {
-        if (this.hasBlock(row, column)) {
+        if (this.hasBlockOnSpot(row, column)) {
           this.moveBlockDownByOne(row, column);
           return;
         }
@@ -36,18 +35,22 @@ export class Board {
     }
   }
 
-  hasBlock(row, column) {
+  hasBlockOnSpot(row, column) {
     return this.gameboard[row][column] !== ".";
   }
 
   moveBlockDownByOne(row, column) {
-    if (row + 1 < this.height) {
+    if (this.blockMoveCanBeMade(row, column)) {
       const blockToMove = this.gameboard[row][column];
       this.gameboard[row][column] = ".";
       this.gameboard[row + 1][column] = blockToMove;
     } else {
       this.isBlockFalling = false;
     }
+  }
+
+  blockMoveCanBeMade(row, column) {
+    return row + 1 < this.height && this.gameboard[row + 1][column] === ".";
   }
 
   hasFalling() {
