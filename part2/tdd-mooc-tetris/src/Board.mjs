@@ -2,22 +2,25 @@ export class Board {
   width;
   height;
   gameboard;
+  isBlockFalling;
 
   constructor(width, height) {
     this.width = width;
     this.height = height;
     this.gameboard = Array(height).fill().map(() => Array(width).fill("."));
+    this.isBlockFalling = false;
   }
 
   drop(block) {
     this.validateGameboardEmpty()
     const middle = Math.floor(this.width / 2);
     this.gameboard[0][middle] = block.color;
+    this.isBlockFalling = true;
   }
 
   validateGameboardEmpty() {
-    const hasBlocksDropping = this.gameboard.flat().some(x => x !== ".");
-    if (hasBlocksDropping) {
+    const hasBlocksFalling= this.gameboard.flat().some(x => x !== ".");
+    if (hasBlocksFalling) {
       throw new Error("already falling");
     }
   }
@@ -38,9 +41,17 @@ export class Board {
   }
 
   moveBlockDownByOne(row, column) {
-    const blockToMove = this.gameboard[row][column];
-    this.gameboard[row][column] = ".";
-    this.gameboard[row + 1][column] = blockToMove;
+    if (row + 1 < this.height) {
+      const blockToMove = this.gameboard[row][column];
+      this.gameboard[row][column] = ".";
+      this.gameboard[row + 1][column] = blockToMove;
+    } else {
+      this.isBlockFalling = false;
+    }
+  }
+
+  hasFalling() {
+    return this.isBlockFalling;
   }
 
   toString() {
