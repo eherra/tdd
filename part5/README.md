@@ -34,9 +34,3 @@ MongoDB
 - Robot Framework for end-to-end test
 - JUnit, Mockito for backend
 - Jest, Chai, Mocha for frontend
-
-
-
-
-
-
