@@ -11,6 +11,13 @@ export function daysUntilChristmas() {
   return Math.floor(diffMillis / millisPerDay);
 }
 
-// Using current time in tests makes it hard to test.
+// Using current time in tests makes it hard to test. => give Date as parameter
+
+// many instances of Date-class created for no purpose
 
 // millisPerDay global variable not good habit
+
+// "Date has been a long-standing pain point in ECMAScript" -> using temporal better
+
+// method is doing lot things (also unnecessary things like creating variable "now" and with that "today") 
+// => split it to multiple smaller methods

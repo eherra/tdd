@@ -1,15 +1,26 @@
-export const daysUntilChristmas = (dateToCompareFrom) => {
-  const today = new Date(dateToCompareFrom.getFullYear(), dateToCompareFrom.getMonth(), dateToCompareFrom.getDate());
-  const christmasDay = new Date(dateToCompareFrom.getFullYear(), 12 - 1, 25);
-  if (today.getTime() > christmasDay.getTime()) {
-    christmasDay.setFullYear(new Date().getFullYear() + 1);
+export const daysUntilChristmas = (dateToCompare) => {
+  if (!dateToCompare) {
+    throw new Error('Parameter Date is missing!');
   }
-  const diffMillis = christmasDay.getTime() - today.getTime();
+
+  const christmasDay = getChristmasDayAsDate(dateToCompare.getFullYear())
+  
+  // year addition needed if today's date is between 26-31.12.
+  if (dateToCompare.getTime() > christmasDay.getTime()) {
+    christmasDay.setFullYear(dateToCompare.getFullYear() + 1);
+  }
+  const diffMillis = christmasDay.getTime() - dateToCompare.getTime();
   return Math.floor(diffMillis / getMillisPerDay());
+}
+
+const getChristmasDayAsDate = (year) => {
+  return new Date(`${year}-12-25`);
 }
 
 const getMillisPerDay = () => {
   return 24 * 60 * 60 * 1000;
 }
 
-console.log(daysUntilChristmas(new Date()))
+// console.log(daysUntilChristmas(new Date()))
+// console.log(daysUntilChristmas(new Date("2023-01-01")))
+// console.log(daysUntilChristmas(new Date(2020, 11, 1)))
