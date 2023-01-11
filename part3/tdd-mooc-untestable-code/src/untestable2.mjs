@@ -7,6 +7,7 @@ function diceRoll() {
 export function diceHandValue() {
   const die1 = diceRoll();
   const die2 = diceRoll();
+  console.log(die1, die2)
   if (die1 === die2) {
     // one pair
     return 100 + die1;
@@ -15,3 +16,11 @@ export function diceHandValue() {
     return Math.max(die1, die2);
   }
 }
+
+// randomness not possible to test
+
+// property-base testing could be used
+
+// if testing functionality of the methods, mocking Math.random() is possible with sinon.js library
+
+// else {} not needed
