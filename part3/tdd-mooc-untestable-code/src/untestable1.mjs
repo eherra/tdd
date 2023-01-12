@@ -15,7 +15,7 @@ export function daysUntilChristmas() {
 
 // many instances of Date-class created for no purpose
 
-// millisPerDay global variable not good habit
+// millisPerDay global variable, better to write straight the value as 86400000 
 
 // "Date has been a long-standing pain point in ECMAScript" -> using temporal better
 

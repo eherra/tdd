@@ -19,3 +19,13 @@ export async function parsePeopleCsv(filePath) {
     return person;
   });
 }
+
+// file system is a global variable => parsePeopleCsv funtion reads from filesystem => mock file system for testing with fs-mock
+
+// gender.charAt(0) => expecting that gender exists on the row, if it doesnt, this will lead to an error
+
+// person.age = parseInt(age); => expecting that "age" is string which is numeric value being NaN
+
+// creating the person-object should be its own method
+
+// no try-catch on reading filesystme

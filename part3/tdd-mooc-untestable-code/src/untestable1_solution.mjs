@@ -1,3 +1,5 @@
+const MILLISECONDS_PER_DAY = 86400000;
+
 export const daysUntilChristmas = (dateToCompare) => {
   if (!dateToCompare) {
     throw new Error('Parameter Date is missing!');
@@ -10,15 +12,11 @@ export const daysUntilChristmas = (dateToCompare) => {
     christmasDay.setFullYear(dateToCompare.getFullYear() + 1);
   }
   const diffMillis = christmasDay.getTime() - dateToCompare.getTime();
-  return Math.floor(diffMillis / getMillisPerDay());
+  return Math.floor(diffMillis / MILLISECONDS_PER_DAY);
 }
 
 const getChristmasDayAsDate = (year) => {
   return new Date(`${year}-12-25`);
-}
-
-const getMillisPerDay = () => {
-  return 24 * 60 * 60 * 1000;
 }
 
 // console.log(daysUntilChristmas(new Date()))
