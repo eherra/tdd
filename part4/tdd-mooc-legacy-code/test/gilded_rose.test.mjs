@@ -27,9 +27,24 @@ describe("Aged brie tests", () => {
     const gildedRose = new Shop([new Item(AGED_BRIE, -1, 30)]);
     const items = gildedRose.updateQuality();
     expect(items[0].name).to.equal(AGED_BRIE);
-    expect
-    (items[0].quality).to.equal(32);
+    expect(items[0].quality).to.equal(32);
     expect(items[0].sellIn).to.equal(-2);
+  });
+
+  it("Quality shoud stay 50 when SellIn date is 0", () => {
+    const gildedRose = new Shop([new Item(AGED_BRIE, 0, 50)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(AGED_BRIE);
+    expect(items[0].quality).to.equal(50);
+    expect(items[0].sellIn).to.equal(-1);
+  });
+
+  it("Quality shoud increase by one when SellIn is 1", () => {
+    const gildedRose = new Shop([new Item(AGED_BRIE, 1, 3)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(AGED_BRIE);
+    expect(items[0].quality).to.equal(4);
+    expect(items[0].sellIn).to.equal(0);
   });
 }),
 
@@ -43,12 +58,36 @@ describe("Backstage passes to a TAFKAL80ETC concert tests", () => {
     expect(items[0].sellIn).to.equal(14);
   });
 
+  it("Quality should increase by 1 when 11 days left", () => {
+    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 11, 10)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(BACKSTAGE_PASS);
+    expect(items[0].quality).to.equal(11);
+    expect(items[0].sellIn).to.equal(10);
+  });
+
   it("Quality should increase only until 50", () => {
     const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 10, 49)]);
     const items = gildedRose.updateQuality();
     expect(items[0].name).to.equal(BACKSTAGE_PASS);
     expect(items[0].quality).to.equal(50);
     expect(items[0].sellIn).to.equal(9);
+  });
+
+  it("Quality should go until 50 when SellIn under 6", () => {
+    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 5, 47)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(BACKSTAGE_PASS);
+    expect(items[0].quality).to.equal(50);
+    expect(items[0].sellIn).to.equal(4);
+  });
+
+  it("Quality should stay at 50", () => {
+    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 5, 48)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(BACKSTAGE_PASS);
+    expect(items[0].quality).to.equal(50);
+    expect(items[0].sellIn).to.equal(4);
   });
 
   it("Quality should increase double when SellIn date passes at 10", () => {
@@ -74,6 +113,14 @@ describe("Backstage passes to a TAFKAL80ETC concert tests", () => {
     expect(items[0].quality).to.equal(0);
     expect(items[0].sellIn).to.equal(-1);
   });
+
+  it("Quality should increase double when SellIn date passes exactly 6", () => {
+    const gildedRose = new Shop([new Item(BACKSTAGE_PASS, 6, 30)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(BACKSTAGE_PASS);
+    expect(items[0].quality).to.equal(32);
+    expect(items[0].sellIn).to.equal(5);
+  });
 }),
 
   // Sulfuras, Hand of Ragnaros tests
@@ -84,6 +131,22 @@ describe("Sulfuras, Hand of Ragnaros tests", () => {
     expect(items[0].name).to.equal(SULFURAS_HAND);
     expect(items[0].quality).to.equal(10);
     expect(items[0].sellIn).to.equal(15);
+  });
+
+  it("Quality and SellIn should stay same when SellIn minus and quality positive", () => {
+    const gildedRose = new Shop([new Item(SULFURAS_HAND, -1, 1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(SULFURAS_HAND);
+    expect(items[0].quality).to.equal(1);
+    expect(items[0].sellIn).to.equal(-1);
+  });
+
+  it("Quality and SellIn should stay same when SellIn minus and quality positive", () => {
+    const gildedRose = new Shop([new Item(SULFURAS_HAND, 0, 1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(SULFURAS_HAND);
+    expect(items[0].quality).to.equal(1);
+    expect(items[0].sellIn).to.equal(0);
   });
 }),
   // Not defined name item
@@ -102,5 +165,20 @@ describe("Random Item tests", () => {
     expect(items[0].name).to.equal(RANDOM_ITEM);
     expect(items[0].quality).to.equal(1);
     expect(items[0].sellIn).to.equal(-3);
+  });
+
+  it("Quality should stay 0", () => {
+    const gildedRose = new Shop([new Item(RANDOM_ITEM, 0, 0)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).to.equal(RANDOM_ITEM);
+    expect(items[0].quality).to.equal(0);
+    expect(items[0].sellIn).to.equal(-1);
+  });
+}),
+
+describe("Shop list tests", () => {
+  it("Shop list should be empty", () => {
+    const gildedRose = new Shop();
+    expect(gildedRose.items.length).to.equal(0);
   });
 });
