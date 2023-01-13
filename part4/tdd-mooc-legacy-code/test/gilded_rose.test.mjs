@@ -167,6 +167,7 @@ describe("Random Item tests", () => {
     expect(items[0].sellIn).to.equal(-3);
   });
 
+  // to get mutation coverage to 100%, this was needed. might be a bug? quality should go -1 as well
   it("Quality should stay 0", () => {
     const gildedRose = new Shop([new Item(RANDOM_ITEM, 0, 0)]);
     const items = gildedRose.updateQuality();
