@@ -4,10 +4,43 @@
 ### Functionalities
 Basic features required by the course: 
 
-- [ ] add a to-do item
-- [ ] rename a to-do item 
-- [ ] mark a to-do item completed
-- [ ] archive all completed to-do items
+- [x] add a to-do item
+- [x] rename a to-do item 
+- [x] mark a to-do item completed
+- [x] archive all completed to-do items
+
+### How to run
+
+#### Production
+
+On root folder (~/part5/), run command:
+
+```
+docker-compose  up -d
+``` 
+
+Application is running at http://localhost:3000
+
+
+#### Run with test environment against test db
+
+On root folder (~/part5/) run command:
+
+```
+docker-compose -f docker-compose.test.yml up -d
+``` 
+
+Application is running at http://localhost:3000
+
+
+and in order to run intergration test (walking skeleton), run on root:
+
+```
+robot .
+``` 
+
+> Note: you need to have robot framework and chrome webdriver installed in order to run intergration test
+
 
 ### Testing requirements
 - use unit tests to cover as much of the code as is possible to unit test
@@ -32,5 +65,5 @@ MongoDB
 
 #### Testing
 - Robot Framework for end-to-end test
-- JUnit, Mockito for backend
-- Jest, Chai, Mocha for frontend
+- JUnit and Mockito for backend
+- Jest and React-Testing-Library for frontend

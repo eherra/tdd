@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  test-frontend:
+    image: test-todos-frontend
+    container_name: test-todos-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+  test-backend:
+    image: test-todos-backend
+    container_name: test-todos-backend
+    build:
+      context: ./backend
+      dockerfile: test.Dockerfile
+    restart: always
+    environment:
+      - SPRING_PROFILE_ACTIVE=test
+      - spring_data_mongodb_database=test_todos
+      - spring_data_mongodb_host=test-mongodb_container
+    ports:
+      - 8080:8080
+    depends_on:
+      - test-mongodb_container
+
+  test-mongodb_container:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - test-mongodb_data_container:/data/db
+
+volumes:
+  test-mongodb_data_container:
+
