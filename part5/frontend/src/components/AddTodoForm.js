@@ -53,6 +53,7 @@ const AddTodoForm = () => {
             placeholder="Description..."
             required
             onChange={handleInputChange}
+            value={todoInput}
           >
           </Input>
         </FormControl>

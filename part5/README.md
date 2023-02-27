@@ -9,6 +9,12 @@ Basic features required by the course:
 - [x] mark a to-do item completed
 - [x] archive all completed to-do items
 
+
+### Demo (20 seconds)
+
+<img src="https://github.com/eherra/tdd/part5/blob/main/docs/demoPart5.gif" width="80%" heigth="80%">
+
+
 ### How to run
 
 #### Production
