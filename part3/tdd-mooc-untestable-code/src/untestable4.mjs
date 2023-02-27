@@ -1,5 +1,7 @@
 import argon2 from "@node-rs/argon2";
 import pg from "pg";
+import dotenv from "dotenv"
+dotenv.config();
 
 export class PostgresUserDao {
   static instance;
@@ -60,3 +62,14 @@ export class PasswordService {
     await this.users.save(user);
   }
 }
+
+const s = new PasswordService();
+s.changePassword(1, "newPass", "keke")
+
+
+// Singleton is an anti-pattern = PostgresUserDao singleton
+
+// Should create own db for testing on test setup, which will be removed on the teardown. 
+// Test DB naming should start with "test-db" etc
+
+// db better to provide as depency injection, users db now a global variable

@@ -3,9 +3,12 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_USER: untestable
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
     mem_reservation: 100m
     mem_limit: 200m
     ports:
       - "127.0.0.1:5432:5432"
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    
