@@ -12,7 +12,7 @@ Basic features required by the course:
 
 ### Demo (20 seconds)
 
-<img src="https://github.com/eherra/tdd/part5/blob/main/docs/demoPart5.gif" width="80%" heigth="80%">
+<img src="https://github.com/eherra/tdd/blob/main/part5/docs/demoPart5.gif" width="70%" heigth="70%">
 
 
 ### How to run
