@@ -29,7 +29,7 @@ Other examples of commands:
 
     node src/cliApp.mjs -t -it 20 -f /glider.rle
 
-    node src/cliApp.mjs -t -it 3 -gs 50 -f /eater.rle
+    node src/cliApp.mjs -t -it 3 -gs 50 -f /herschel.rle
 
     node src/cliApp.mjs -t -it 12 -gs 50 -f /block.rle
 
