@@ -14,10 +14,10 @@ Example command to use from project root:
 
 
 where
-- ´-t´ = test, if used, uses the files from ´patterns´ folder
-- ´-it´ = iterations followed by amount
-- ´-f´ = file, followed by file path. If used togethor with -t flag, use files u can find from ´patterns´ folder. Otherwise provide full file path
-- ´-gs´ = gridSize. if not used, default 30
+- `-t` = test, if used, uses the files from `patterns` folder
+- `-it` = iterations followed by amount
+- `-f` = file, followed by file path. If used togethor with -t flag, use files u can find from `patterns` folder. Otherwise provide full file path
+- `-gs` = gridSize. if not used, default 30
 
 Console print:
 
