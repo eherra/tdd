@@ -1,7 +1,5 @@
 # CLI game of life 
 
-An empty project with JavaScript testing tools preconfigured. Do whatever you like with it.
-
 ## Prerequisites
 
 You'll need a recent [Node.js](https://nodejs.org/) version. Then download this project's dependencies with:
