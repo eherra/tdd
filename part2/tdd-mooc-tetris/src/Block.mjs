@@ -1,7 +1,15 @@
 export class Block {
-  color;
+  x;
+  y;
+  isFalling;
+  shape;
+  type;
 
-  constructor(color) {
-    this.color = color;
+  constructor(type) {
+    this.x = 0;
+    this.y = 1;
+    this.shape = [[1]]
+    this.type = type
+    this.isFalling = true;
   }
 }
