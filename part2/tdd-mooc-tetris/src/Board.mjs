@@ -1,49 +1,70 @@
+import lodash from 'lodash'
+
 export class Board {
   boardWidth;
   boardHeight;
+  currentPieceFalling;
+  gameboard;
 
   constructor(width, height) {
     this.boardWidth = width;
     this.boardHeight = height;
-    this.boardPieces = [];
+    this.currentPieceFalling = null;
+    this.gameboard = Array(height)
+      .fill(null)
+      .map(() => Array(width).fill("."));
   }
 
   drop(tetromino) {
-    if (!this.hasFalling()) {
+    if (!this.currentPieceFalling) {
+      this.currentPieceFalling = lodash.cloneDeep(tetromino)
       const middle = Math.floor(this.boardWidth / 2);
-      tetromino.y =
+      this.currentPieceFalling.y =
         tetromino.type === "T"
-          ? middle - Math.floor(tetromino.shape.length / 2) - 1
+          ? middle - Math.floor(this.currentPieceFalling.shape.length / 2) - 1
           : middle;
-      this.boardPieces.push(tetromino);
     } else {
       throw new Error("already falling");
     }
   }
 
-  hasFalling() {
-    return this.boardPieces.some((piece) => piece.isFalling);
-  }
-
   tick() {
-    for (let [index, piece] of this.boardPieces.entries()) {
-      if (piece.isFalling) {
-        const shapeHeight = piece.shape.length;
-        const howMuchEmpty = this.checkEmptyRowsBottom(piece.shape);
-        const xToCheck = piece.x + shapeHeight - howMuchEmpty;
+    if (this.currentPieceFalling) {
+      const shapeHeight = this.currentPieceFalling.shape.length;
+      const howMuchEmpty = this.checkEmptyRowsBottom(
+        this.currentPieceFalling.shape
+      );
+      const xToCheck = this.currentPieceFalling.x + shapeHeight - howMuchEmpty;
 
-        if (this.isSpaceFreeForMove(xToCheck, piece.y, piece.type)) {
-          const newPiece = { ...piece, x: (piece.x += 1) };
-          this.boardPieces.splice(index, 1);
-          this.boardPieces.push(newPiece);
-        } else {
-          const newPiece = { ...piece, isFalling: false };
-          this.boardPieces.splice(index, 1);
-          this.boardPieces.push(newPiece);
-        }
-        break;
+      if (
+        this.isSpaceFreeForMove(
+          xToCheck,
+          this.currentPieceFalling.y,
+          this.currentPieceFalling.type
+        )
+      ) {
+        this.currentPieceFalling.moveDown();
+      } else {
+        this.drawShapeToBoard(this.currentPieceFalling);
+        this.currentPieceFalling = null;
       }
     }
+  }
+
+  moveLeft() {
+    this.currentPieceFalling.moveLeft();
+  }
+
+  moveRight() {
+    this.currentPieceFalling.moveRight();
+  }
+
+  moveDown() {
+    this.currentPieceFalling.moveDown();
+  }
+
+  hasFalling() {
+    return this.currentPieceFalling !== null;
   }
 
   checkEmptyRowsBottom(pieceShape) {
@@ -72,17 +93,35 @@ export class Board {
   }
 
   getCurrentBoard() {
-    let gameboard = Array(this.boardHeight)
-      .fill(null)
-      .map(() => Array(this.boardWidth).fill("."));
-
-    for (let piece of this.boardPieces) {
-      gameboard = this.drawShapeToBoard(gameboard, piece);
-    }
+    const gameboard = this.getCurrentBoardString(
+      this.gameboard,
+      this.currentPieceFalling
+    );
     return gameboard;
   }
 
-  drawShapeToBoard(board, piece) {
+  getCurrentBoardString(gameboard, currentPieceFalling) {
+    const tempBoard = gameboard.map((arr) => arr.slice());
+    if (!currentPieceFalling) return tempBoard;
+
+    const shape = currentPieceFalling.shape;
+    let startX = currentPieceFalling.x;
+    let startY = currentPieceFalling.y;
+
+    for (let row of shape) {
+      for (let val of row) {
+        if (val !== ".") {
+          tempBoard[startX][startY] = currentPieceFalling.type;
+        }
+        startY += 1;
+      }
+      startY = currentPieceFalling.y;
+      startX += 1;
+    }
+    return tempBoard;
+  }
+
+  drawShapeToBoard(piece) {
     const shape = piece.shape;
     let startX = piece.x;
     let startY = piece.y;
@@ -90,25 +129,24 @@ export class Board {
     for (let row of shape) {
       for (let val of row) {
         if (val !== ".") {
-          board[startX][startY] = piece.type;
+          this.gameboard[startX][startY] = piece.type;
         }
         startY += 1;
       }
       startY = piece.y;
       startX += 1;
     }
-    return board;
   }
 
   toString() {
-    const currentBoard = this.getCurrentBoard();
     let gameString = "";
+    const currentBoard = this.getCurrentBoard();
 
     for (let [index, row] of currentBoard.entries()) {
       for (let val of row) {
         gameString += val;
       }
-      gameString += index !== currentBoard.length ? "\n" : "";
+      gameString += index !== this.gameboard.length ? "\n" : "";
     }
 
     return gameString;

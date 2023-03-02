@@ -58,6 +58,18 @@ export class Tetromino {
     return new Tetromino(this.createMatrixString(rotatedMatrix));
   }
 
+  moveRight() {
+    this.y += 1
+  }
+
+  moveLeft() {
+    this.y -= 1
+  }
+
+  moveDown() {
+    this.x += 1
+  }
+ 
   createMatrixString(shapeToCreate) {
     let shape = "";
     for (let row = 0; row < shapeToCreate.length; row++) {

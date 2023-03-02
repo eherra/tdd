@@ -46,7 +46,6 @@ describe("Falling tetrominoes", () => {
     const second = Tetromino.T_SHAPE
     board.drop(first);
     fallToBottom(board);
-    console.log("ADDED")
     board.drop(second);
     fallToBottom(board);
 
