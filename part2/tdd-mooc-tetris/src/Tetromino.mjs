@@ -1,3 +1,11 @@
+import { IShape } from "./shapes/IShape.mjs";
+import { JShape } from "./shapes/JShape.mjs";
+import { LShape } from "./shapes/LShape.mjs";
+import { OShape } from "./shapes/OShape.mjs";
+import { TShape } from "./shapes/TShape.mjs";
+import { ZShape } from "./shapes/ZShape.mjs";
+import { SShape } from "./shapes/SShape.mjs";
+
 export class Tetromino {
   shape;
   type;
@@ -14,6 +22,51 @@ export class Tetromino {
     0,
     3,
     "down"
+  );
+
+  static L_SHAPE = new Tetromino(
+    `....
+      LLL.
+      L...
+      ....`,
+    "L",
+    0,
+    3,
+    "down"
+  );
+
+  static J_SHAPE = new Tetromino(
+    `....
+      JJJ.
+      ..J.
+      ....`,
+    "J",
+    0,
+    3,
+    "down"
+  );
+
+
+  static S_SHAPE = new Tetromino(
+    `....
+    .SS.
+    SS..
+    ....`,
+    "S",
+    0,
+    3,
+    "left"
+  );
+
+  static Z_SHAPE = new Tetromino(
+    `....
+    ZZ..
+    .ZZ.
+    ....`,
+    "Z",
+    0,
+    3,
+    "left"
   );
 
   static I_SHAPE = new Tetromino(
@@ -55,9 +108,14 @@ export class Tetromino {
   }
 
   rotateRight() {
-    if (this.type === "O") return this;
+    if (this.type === "O") return OShape.getOShape();
     if (this.type === "I") return this.rotateIShape();
+    if (this.type === "S") return this.rotateSShape()
+    if (this.type === "Z") return this.rotateZShape()
     if (this.type === "T") return this.rotateTShape(true);
+    if (this.type === "L") return this.rotateLShape(true)
+    if (this.type === "J") return this.rotateJShape(true)
+
     const rotatedMatrix = this.shape[0].map((val, index) =>
       this.shape.map((row) => row[index]).reverse()
     );
@@ -70,9 +128,13 @@ export class Tetromino {
   }
 
   rotateLeft() {
-    if (this.type === "O") return this;
+    if (this.type === "O") return OShape.getOShape();
     if (this.type === "I") return this.rotateIShape();
+    if (this.type === "S") return this.rotateSShape()
+    if (this.type === "Z") return this.rotateZShape()
     if (this.type === "T") return this.rotateTShape(false);
+    if (this.type === "L") return this.rotateLShape(false)
+    if (this.type === "J") return this.rotateJShape(false)
 
     return new Tetromino(
       this.createMatrixString(rotatedMatrix),
@@ -112,122 +174,103 @@ export class Tetromino {
     switch (this.direction) {
       case "up":
         if (isRotateRight) {
-          return this.getTShapeRight();
+          return TShape.getTShapeRight(this.x, this.y);
         } else {
-          return this.getTShapeLeft();
+          return TShape.getTShapeLeft(this.x, this.y);
         }
       case "down":
         if (isRotateRight) {
-          return this.getTShapeLeft();
+          return TShape.getTShapeLeft(this.x, this.y);
         } else {
-          return this.getTShapeRight();
+          return TShape.getTShapeRight(this.x, this.y);
         }
       case "left":
         if (isRotateRight) {
-          return this.getTShapeUp();
+          return TShape.getTShapeUp(this.x, this.y);
         } else {
-          return this.getTShapeDown();
+          return TShape.getTShapeDown(this.x, this.y);
         }
       case "right":
         if (isRotateRight) {
-          return this.getTShapeDown();
+          return TShape.getTShapeDown(this.x, this.y);
         } else {
-          return this.getTShapeUp();
+          return TShape.getTShapeUp(this.x, this.y);
         }
     }
   }
 
-  rotateIShape() {
-    if (this.direction === "left") {
-      return new Tetromino(
-        `..I.
-        ..I.
-        ..I.
-        ..I.`,
-        "I",
-        this.x,
-        this.y,
-        "up"
-      );
+  rotateLShape(isRotateRight) {
+    switch (this.direction) {
+      case "up":
+        if (isRotateRight) {
+          return LShape.getLShapeRight(this.x, this.y);
+        } else {
+          return LShape.getLShapeLeft(this.x, this.y);
+        }
+      case "down":
+        if (isRotateRight) {
+          return LShape.getLShapeLeft(this.x, this.y);
+        } else {
+          return LShape.getLShapeRight(this.x, this.y);
+        }
+      case "left":
+        if (isRotateRight) {
+          return LShape.getLShapeUp(this.x, this.y);
+        } else {
+          return LShape.getLShapeDown(this.x, this.y);
+        }
+      case "right":
+        if (isRotateRight) {
+          return LShape.getLShapeDown(this.x, this.y);
+        } else {
+          return LShape.getLShapeUp(this.x, this.y);
+        }
     }
+  }
 
-    return new Tetromino(
-      `....
-        IIII
-        ....
-        ....`,
-      "I",
-      this.x,
-      this.checkIShapeWallKick(this.y),
-      "left"
-    );
+  rotateJShape(isRotateRight) {
+    switch (this.direction) {
+      case "up":
+        if (isRotateRight) {
+          return JShape.getJShapeRight(this.x, this.y);
+        } else {
+          return JShape.getJShapeLeft(this.x, this.y);
+        }
+      case "down":
+        if (isRotateRight) {
+          return JShape.getJShapeLeft(this.x, this.y);
+        } else {
+          return JShape.getJShapeRight(this.x, this.y);
+        }
+      case "left":
+        if (isRotateRight) {
+          return JShape.getJShapeUp(this.x, this.y);
+        } else {
+          return JShape.getJShapeDown(this.x, this.y);
+        }
+      case "right":
+        if (isRotateRight) {
+          return JShape.getJShapeDown(this.x, this.y);
+        } else {
+          return JShape.getJShapeUp(this.x, this.y);
+        }
+    }
+  }
+
+
+  rotateIShape() {
+    return IShape.rotateIShape(this.x, this.y, this.direction)
+  }
+
+  rotateZShape() {
+    return ZShape.rotateZShape(this.x, this.y, this.direction)
+  }
+
+  rotateSShape() {
+    return SShape.rotateSShape(this.x, this.y, this.direction)
   }
 
   toString() {
     return this.createMatrixString(this.shape);
-  }
-
-  getTShapeUp() {
-    return new Tetromino(
-      `....
-      .T..
-      TTT.
-      ....`,
-      "T",
-      this.x,
-      this.y,
-      "up"
-    );
-  }
-
-  getTShapeDown() {
-    return new Tetromino(
-      `....
-       TTT.
-       .T..
-       ....`,
-      "T",
-      this.x,
-      this.y,
-      "down"
-    );
-  }
-
-  getTShapeLeft() {
-    return new Tetromino(
-      `.T..
-       TT..
-       .T..
-       ....`,
-      "T",
-      this.x,
-      this.checkWallKick(this.y),
-      "left"
-    );
-  }
-
-  getTShapeRight() {
-    return new Tetromino(
-      `.T..
-       .TT.
-       .T..
-       ....`,
-      "T",
-      this.x,
-      this.y,
-      "right"
-    );
-  }
-
-  checkWallKick(y) {
-    if (y < 0) return 0;
-    if (y > 9) return 9;
-    return y
-  }
-
-  checkIShapeWallKick(y) {
-    if (y < 0) return 0;
-    if (y > 6) return 6;
-    return y
   }
 }

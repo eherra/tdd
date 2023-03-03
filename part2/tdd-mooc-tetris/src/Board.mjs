@@ -36,7 +36,7 @@ export class Board {
       );
       let yToCheck = this.currentPieceFalling.y + howMuchEmpty;
       if (this.currentPieceFalling.type === "T") {
-        yToCheck -= 2
+        yToCheck -= 2;
       }
 
       if (
@@ -54,7 +54,9 @@ export class Board {
   moveRight() {
     if (this.currentPieceFalling) {
       let yToCheck =
-        this.currentPieceFalling.y + this.currentPieceFalling.shape[0].length - 1;
+        this.currentPieceFalling.y +
+        this.currentPieceFalling.shape[0].length -
+        1;
       if (
         this.isSpaceFreeForMoveSide(
           this.currentPieceFalling.x,
@@ -75,7 +77,7 @@ export class Board {
       );
       let xToCheck = this.currentPieceFalling.x + shapeHeight - howMuchEmpty;
       if (this.currentPieceFalling.x === 0) {
-        xToCheck -= 1
+        xToCheck -= 1;
       }
       if (
         this.isSpaceFreeForMove(
@@ -98,7 +100,11 @@ export class Board {
 
   checkEmptyRowsBottom(pieceShape) {
     for (let i = pieceShape.length - 1; i >= 0; i--) {
-      if (pieceShape[i].includes("T") || pieceShape[i].includes("I")) {
+      if (
+        pieceShape[i].includes("T") ||
+        pieceShape[i].includes("I") ||
+        pieceShape[i].includes("L")
+      ) {
         return pieceShape.length - i - 1;
       }
     }
@@ -187,12 +193,20 @@ export class Board {
     let startX = currentPieceFalling.x;
     let startY = currentPieceFalling.y;
     for (let row of shape) {
-      if (row.includes("T") || row.includes("I")) {
+      if (
+        row.includes("T") ||
+        row.includes("I") ||
+        row.includes("L") ||
+        row.includes("J") ||
+        row.includes("S") ||
+        row.includes("Z") ||
+        row.includes("O")
+      ) {
         for (let val of row) {
-            if (val !== ".") {
-              tempBoard[startX][startY] = currentPieceFalling.type;
-            }
-            startY += 1;
+          if (val !== ".") {
+            tempBoard[startX][startY] = currentPieceFalling.type;
+          }
+          startY += 1;
         }
         startX += 1;
         startY = currentPieceFalling.y;
@@ -206,7 +220,7 @@ export class Board {
     let startX = piece.x;
     let startY = piece.y;
     if (startX === 0 && !shape[0].includes("T")) {
-      shape.shift()
+      shape.shift();
     }
 
     for (let row of shape) {
@@ -215,7 +229,6 @@ export class Board {
           this.gameboard[startX][startY] = piece.type;
         }
         startY += 1;
-        
       }
       startY = piece.y;
       startX += 1;
