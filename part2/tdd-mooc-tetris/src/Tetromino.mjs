@@ -1,35 +1,43 @@
 export class Tetromino {
   x;
   y;
-  isFalling;
   shape;
   type;
 
   static T_SHAPE = new Tetromino(
-    `.T.
-      TTT
-      ...`, "T"
+    `....
+      TTT.
+      .T..
+      ....`,
+    "T",
+    0,
+    3
   );
 
   static I_SHAPE = new Tetromino(
-    `.....
-    .....
-    IIII.
-    .....
-    .....`, "I"
+    `....
+    IIII
+    ....
+    ....`,
+    "I",
+    0,
+    3
   );
 
   static O_SHAPE = new Tetromino(
     `.OO
     .OO
-    ...`, "O"
+    ...`,
+    "O",
+    0,
+    3
   );
 
-  constructor(shape, type) {
+  constructor(shape, type, x, y) {
     this.shape = this.initShapeAs2DArray(shape);
     this.type = type;
-    this.x = 0;
-    this.isFalling = true;
+    this.x = x;
+    this.y = y;
   }
 
   initShapeAs2DArray(shape) {
@@ -46,7 +54,12 @@ export class Tetromino {
     const rotatedMatrix = this.shape[0].map((val, index) =>
       this.shape.map((row) => row[index]).reverse()
     );
-    return new Tetromino(this.createMatrixString(rotatedMatrix));
+    return new Tetromino(
+      this.createMatrixString(rotatedMatrix),
+      this.type,
+      this.x,
+      this.y
+    );
   }
 
   rotateLeft() {
@@ -55,21 +68,29 @@ export class Tetromino {
     const rotatedMatrix = this.shape[0].map((val, index) =>
       this.shape.map((row) => row[row.length - 1 - index])
     );
-    return new Tetromino(this.createMatrixString(rotatedMatrix));
+    return new Tetromino(
+      this.createMatrixString(rotatedMatrix),
+      this.type,
+      this.x,
+      this.y
+    );
   }
 
   moveRight() {
-    this.y += 1
+    const newShape = this.createMatrixString(this.shape);
+    return new Tetromino(newShape, this.type, this.x, this.y + 1);
   }
 
   moveLeft() {
-    this.y -= 1
+    const newShape = this.createMatrixString(this.shape);
+    return new Tetromino(newShape, this.type, this.x, this.y - 1);
   }
 
   moveDown() {
-    this.x += 1
+    const newShape = this.createMatrixString(this.shape);
+    return new Tetromino(newShape, this.type, this.x + 1, this.y);
   }
- 
+
   createMatrixString(shapeToCreate) {
     let shape = "";
     for (let row = 0; row < shapeToCreate.length; row++) {
@@ -85,23 +106,25 @@ export class Tetromino {
   rotateIShape() {
     if (this.shape[0][2] !== "I") {
       return new Tetromino(
-        `..I..
-        ..I..
-        ..I..
-        ..I..
-        .....`,
-        "I"
+        `..I.
+        ..I.
+        ..I.
+        ..I.`,
+        "I",
+        this.x,
+        this.y
       );
     }
 
     return new Tetromino(
-      `.....
-        .....
-        IIII.
-        .....
-        .....`,
-      "I"
-    );
+      `....
+        IIII
+        ....
+        ....`,
+      "I",
+      this.x,
+      this.y
+      );
   }
 
   toString() {

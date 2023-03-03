@@ -18,11 +18,6 @@ export class Board {
   drop(tetromino) {
     if (!this.currentPieceFalling) {
       this.currentPieceFalling = lodash.cloneDeep(tetromino);
-      const middle = Math.floor(this.boardWidth / 2);
-      this.currentPieceFalling.y =
-        tetromino.type === "T"
-          ? middle - Math.floor(this.currentPieceFalling.shape.length / 2) - 1
-          : middle;
     } else {
       throw new Error("already falling");
     }
@@ -39,8 +34,8 @@ export class Board {
       const howMuchEmpty = this.checkEmptyRowsLeft(
         this.currentPieceFalling.shape
       );
-      const yToCheck =
-        this.currentPieceFalling.y - 1 + howMuchEmpty;
+      let yToCheck = this.currentPieceFalling.y - 1 + howMuchEmpty;
+
       if (
         this.isSpaceFreeForMoveSide(
           this.currentPieceFalling.x,
@@ -48,28 +43,24 @@ export class Board {
           this.currentPieceFalling.type
         )
       ) {
-        this.currentPieceFalling.moveLeft();
+        this.currentPieceFalling = this.currentPieceFalling.moveLeft();
       }
     }
   }
 
   moveRight() {
     if (this.currentPieceFalling) {
-      const howMuchEmpty = this.checkEmptyRowsRight(
-        this.currentPieceFalling.shape
-      );
-      const yToCheck =
+      let yToCheck =
         this.currentPieceFalling.y +
-        this.currentPieceFalling.shape[0].length -
-        howMuchEmpty;
-      if (
+        this.currentPieceFalling.shape[0].length;
+              if (
         this.isSpaceFreeForMoveSide(
           this.currentPieceFalling.x,
           yToCheck,
           this.currentPieceFalling.type
         )
       ) {
-        this.currentPieceFalling.moveRight();
+        this.currentPieceFalling = this.currentPieceFalling.moveRight();
       }
     }
   }
@@ -88,7 +79,7 @@ export class Board {
           this.currentPieceFalling.type
         )
       ) {
-        this.currentPieceFalling.moveDown();
+        this.currentPieceFalling = this.currentPieceFalling.moveDown();
       } else {
         this.drawShapeToBoard(this.currentPieceFalling);
         this.currentPieceFalling = null;
@@ -102,7 +93,7 @@ export class Board {
 
   checkEmptyRowsBottom(pieceShape) {
     for (let i = pieceShape.length - 1; i >= 0; i--) {
-      if (pieceShape[i].includes("T" || "I" || "O")) {
+      if (pieceShape[i].includes("T") || pieceShape[i].includes("I")) {
         return pieceShape.length - i - 1;
       }
     }
@@ -113,7 +104,6 @@ export class Board {
     const rotatedMatrix = pieceShape[0].map((val, index) =>
       pieceShape.map((row) => row[row.length - 1 - index])
     );
-
     return this.checkEmptyRowsBottom(rotatedMatrix);
   }
 
@@ -141,6 +131,14 @@ export class Board {
     return false;
   }
 
+  rotateRight() {
+    this.currentPieceFalling = this.currentPieceFalling.rotateRight();
+  }
+
+  rotateLeft() {
+    this.currentPieceFalling = this.currentPieceFalling.rotateLeft();
+  }
+
   isSpaceFreeForMoveSide(x, y, type) {
     const currentBoard = this.getCurrentBoard();
     if (x < this.boardHeight && y < this.boardWidth) {
@@ -148,6 +146,20 @@ export class Board {
         return (
           currentBoard[x][y] === "." && currentBoard[x + 1][y] === "."
           //currentBoard[x + 2][y] === "." think this thru -> might fail if T shape is upside down
+        );
+      }
+
+      if (type === "I") {
+        if (this.currentPieceFalling.shape[0][2] !== "I") {
+          return (
+            currentBoard[x + 1][y] === "."
+          ); 
+        }
+        return (
+          currentBoard[x][y] === "." &&
+          currentBoard[x + 1][y] === "." &&
+          currentBoard[x + 2][y] === "." && 
+          currentBoard[x + 3][y] === "."
         );
       }
 
@@ -171,7 +183,6 @@ export class Board {
     const shape = currentPieceFalling.shape;
     let startX = currentPieceFalling.x;
     let startY = currentPieceFalling.y;
-
     for (let row of shape) {
       for (let val of row) {
         if (val !== ".") {
