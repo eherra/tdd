@@ -34,7 +34,7 @@ export class Board {
       const howMuchEmpty = this.checkEmptyRowsLeft(
         this.currentPieceFalling.shape
       );
-      let yToCheck = this.currentPieceFalling.y - 1 + howMuchEmpty;
+      let yToCheck = this.currentPieceFalling.y + howMuchEmpty - 2;
 
       if (
         this.isSpaceFreeForMoveSide(
@@ -51,9 +51,8 @@ export class Board {
   moveRight() {
     if (this.currentPieceFalling) {
       let yToCheck =
-        this.currentPieceFalling.y +
-        this.currentPieceFalling.shape[0].length;
-              if (
+        this.currentPieceFalling.y + this.currentPieceFalling.shape[0].length - 1;
+      if (
         this.isSpaceFreeForMoveSide(
           this.currentPieceFalling.x,
           yToCheck,
@@ -140,8 +139,12 @@ export class Board {
   }
 
   isSpaceFreeForMoveSide(x, y, type) {
+    console.log("HEP")
+    console.log(x)
+    console.log(y)
+
     const currentBoard = this.getCurrentBoard();
-    if (x < this.boardHeight && y < this.boardWidth) {
+    if (x < this.boardHeight && y < this.boardWidth && y >= 0) {
       if (type === "T") {
         return (
           currentBoard[x][y] === "." && currentBoard[x + 1][y] === "."
@@ -151,14 +154,12 @@ export class Board {
 
       if (type === "I") {
         if (this.currentPieceFalling.shape[0][2] !== "I") {
-          return (
-            currentBoard[x + 1][y] === "."
-          ); 
+          return currentBoard[x + 1][y] === ".";
         }
         return (
           currentBoard[x][y] === "." &&
           currentBoard[x + 1][y] === "." &&
-          currentBoard[x + 2][y] === "." && 
+          currentBoard[x + 2][y] === "." &&
           currentBoard[x + 3][y] === "."
         );
       }
@@ -184,14 +185,16 @@ export class Board {
     let startX = currentPieceFalling.x;
     let startY = currentPieceFalling.y;
     for (let row of shape) {
-      for (let val of row) {
-        if (val !== ".") {
-          tempBoard[startX][startY] = currentPieceFalling.type;
+      if (row.includes("T") || row.includes("I")) {
+        for (let val of row) {
+            if (val !== ".") {
+              tempBoard[startX][startY] = currentPieceFalling.type;
+            }
+            startY += 1;
         }
-        startY += 1;
+        startX += 1;
+        startY = currentPieceFalling.y;
       }
-      startY = currentPieceFalling.y;
-      startX += 1;
     }
     return tempBoard;
   }
