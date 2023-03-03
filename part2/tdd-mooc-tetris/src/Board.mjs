@@ -103,7 +103,12 @@ export class Board {
       if (
         pieceShape[i].includes("T") ||
         pieceShape[i].includes("I") ||
-        pieceShape[i].includes("L")
+        pieceShape[i].includes("L") ||
+        pieceShape[i].includes("S") ||
+        pieceShape[i].includes("Z") ||
+        pieceShape[i].includes("L") ||
+        pieceShape[i].includes("J") ||
+        pieceShape[i].includes("O") 
       ) {
         return pieceShape.length - i - 1;
       }
@@ -161,7 +166,7 @@ export class Board {
       }
 
       if (type === "I") {
-        if (this.currentPieceFalling.shape[0][2] !== "I") {
+        if (this.currentPieceFalling.type === "up") {
           return currentBoard[x + 1][y] === ".";
         }
         return (

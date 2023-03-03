@@ -7,12 +7,6 @@ import { ZShape } from "./shapes/ZShape.mjs";
 import { SShape } from "./shapes/SShape.mjs";
 
 export class Tetromino {
-  shape;
-  type;
-  x;
-  y;
-  direction;
-
   static T_SHAPE = new Tetromino(
     `....
       TTT.
@@ -45,7 +39,6 @@ export class Tetromino {
     3,
     "down"
   );
-
 
   static S_SHAPE = new Tetromino(
     `....
@@ -91,6 +84,12 @@ export class Tetromino {
     "up"
   );
 
+  shape;
+  type;
+  x;
+  y;
+  direction;
+
   constructor(shape, type, x, y, direction) {
     this.shape = this.initShapeAs2DArray(shape);
     this.type = type;
@@ -105,43 +104,6 @@ export class Tetromino {
       .map((x) => x.trim())
       .filter((x) => x.length !== 0);
     return splitted.map((x) => [...x]);
-  }
-
-  rotateRight() {
-    if (this.type === "O") return OShape.getOShape();
-    if (this.type === "I") return this.rotateIShape();
-    if (this.type === "S") return this.rotateSShape()
-    if (this.type === "Z") return this.rotateZShape()
-    if (this.type === "T") return this.rotateTShape(true);
-    if (this.type === "L") return this.rotateLShape(true)
-    if (this.type === "J") return this.rotateJShape(true)
-
-    const rotatedMatrix = this.shape[0].map((val, index) =>
-      this.shape.map((row) => row[index]).reverse()
-    );
-    return new Tetromino(
-      this.createMatrixString(rotatedMatrix),
-      this.type,
-      this.x,
-      this.y
-    );
-  }
-
-  rotateLeft() {
-    if (this.type === "O") return OShape.getOShape();
-    if (this.type === "I") return this.rotateIShape();
-    if (this.type === "S") return this.rotateSShape()
-    if (this.type === "Z") return this.rotateZShape()
-    if (this.type === "T") return this.rotateTShape(false);
-    if (this.type === "L") return this.rotateLShape(false)
-    if (this.type === "J") return this.rotateJShape(false)
-
-    return new Tetromino(
-      this.createMatrixString(rotatedMatrix),
-      this.type,
-      this.x,
-      this.y
-    );
   }
 
   moveRight() {
@@ -168,6 +130,30 @@ export class Tetromino {
       shape += "\n";
     }
     return shape;
+  }
+
+  rotateRight() {
+    if (this.type === "O") return OShape.getOShape();
+    if (this.type === "I") return this.rotateIShape();
+    if (this.type === "S") return this.rotateSShape()
+    if (this.type === "Z") return this.rotateZShape()
+    if (this.type === "T") return this.rotateTShape(true);
+    if (this.type === "L") return this.rotateLShape(true)
+    if (this.type === "J") return this.rotateJShape(true)
+
+    return this;
+  }
+
+  rotateLeft() {
+    if (this.type === "O") return OShape.getOShape();
+    if (this.type === "I") return this.rotateIShape();
+    if (this.type === "S") return this.rotateSShape()
+    if (this.type === "Z") return this.rotateZShape()
+    if (this.type === "T") return this.rotateTShape(false);
+    if (this.type === "L") return this.rotateLShape(false)
+    if (this.type === "J") return this.rotateJShape(false)
+
+    return this;
   }
 
   rotateTShape(isRotateRight) {
