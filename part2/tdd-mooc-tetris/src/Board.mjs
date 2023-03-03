@@ -34,7 +34,10 @@ export class Board {
       const howMuchEmpty = this.checkEmptyRowsLeft(
         this.currentPieceFalling.shape
       );
-      let yToCheck = this.currentPieceFalling.y + howMuchEmpty - 2;
+      let yToCheck = this.currentPieceFalling.y + howMuchEmpty;
+      if (this.currentPieceFalling.type === "T") {
+        yToCheck -= 2
+      }
 
       if (
         this.isSpaceFreeForMoveSide(
@@ -70,7 +73,10 @@ export class Board {
       const howMuchEmpty = this.checkEmptyRowsBottom(
         this.currentPieceFalling.shape
       );
-      const xToCheck = this.currentPieceFalling.x + shapeHeight - howMuchEmpty;
+      let xToCheck = this.currentPieceFalling.x + shapeHeight - howMuchEmpty;
+      if (this.currentPieceFalling.x === 0) {
+        xToCheck -= 1
+      }
       if (
         this.isSpaceFreeForMove(
           xToCheck,
@@ -139,10 +145,6 @@ export class Board {
   }
 
   isSpaceFreeForMoveSide(x, y, type) {
-    console.log("HEP")
-    console.log(x)
-    console.log(y)
-
     const currentBoard = this.getCurrentBoard();
     if (x < this.boardHeight && y < this.boardWidth && y >= 0) {
       if (type === "T") {
@@ -200,9 +202,12 @@ export class Board {
   }
 
   drawShapeToBoard(piece) {
-    const shape = piece.shape;
+    let shape = piece.shape;
     let startX = piece.x;
     let startY = piece.y;
+    if (startX === 0 && !shape[0].includes("T")) {
+      shape.shift()
+    }
 
     for (let row of shape) {
       for (let val of row) {
@@ -210,6 +215,7 @@ export class Board {
           this.gameboard[startX][startY] = piece.type;
         }
         startY += 1;
+        
       }
       startY = piece.y;
       startX += 1;

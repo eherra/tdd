@@ -4,7 +4,7 @@ import { Tetromino } from "../src/Tetromino.mjs";
 
 function fallToBottom(board) {
   for (let i = 0; i < 10; i++) {
-    board.tick();
+    board.moveDown();
   }
 }
 
@@ -28,9 +28,7 @@ describe("Falling blocks", () => {
 
   it("a falling tetromino can be moved left", () => {
     board.drop(Tetromino.T_SHAPE);
-    console.log(board.toString())
     board.moveLeft();
-    console.log(board.toString())
 
     expect(board.toString()).to.equalShape(
       `..TTT.....
@@ -167,13 +165,14 @@ describe("Falling blocks", () => {
 
     board.drop(Tetromino.T_SHAPE);
     moveToAllLeft(board);
+
     expect(board.toString()).to.equalShape(
-        `.T..T.....
-         TTTTTT....
-         .T........
+        `TTTTTT....
+         .T..T.....
          TTT.......
          .T........
-         TTT.......`
+         TTT.......
+         .T........`
       );
   });
 
@@ -193,12 +192,12 @@ describe("Falling blocks", () => {
     board.drop(Tetromino.T_SHAPE);
     moveToAllRight(board);
     expect(board.toString()).to.equalShape(
-      `.....T..T.
-         ....TTTTTT
-         ........T.
+        `....TTTTTT
+         .....T..T.
          .......TTT
          ........T.
-         .......TTT`
+         .......TTT
+         ........T.`
     );
   });
 
@@ -209,9 +208,12 @@ describe("Falling blocks", () => {
     board.drop(Tetromino.T_SHAPE);
     fallToBottom(board);
 
+    board.drop(Tetromino.T_SHAPE);
+    fallToBottom(board);
+
     expect(board.toString()).to.equalShape(
-      `..........
-         ..........
+        `...TTT....
+         ....T.....
          ...TTT....
          ....T.....
          ...TTT....

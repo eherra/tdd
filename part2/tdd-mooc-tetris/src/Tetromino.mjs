@@ -109,7 +109,6 @@ export class Tetromino {
   }
 
   rotateTShape(isRotateRight) {
-    console.log(this.direction)
     switch (this.direction) {
       case "up":
         if (isRotateRight) {
@@ -139,7 +138,7 @@ export class Tetromino {
   }
 
   rotateIShape() {
-    if (this.shape[0][2] !== "I") {
+    if (this.direction === "left") {
       return new Tetromino(
         `..I.
         ..I.
@@ -159,7 +158,7 @@ export class Tetromino {
         ....`,
       "I",
       this.x,
-      this.y,
+      this.checkIShapeWallKick(this.y),
       "left"
     );
   }
@@ -223,6 +222,12 @@ export class Tetromino {
   checkWallKick(y) {
     if (y < 0) return 0;
     if (y > 9) return 9;
+    return y
+  }
+
+  checkIShapeWallKick(y) {
+    if (y < 0) return 0;
+    if (y > 6) return 6;
     return y
   }
 }
