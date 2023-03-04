@@ -113,7 +113,12 @@ export class Tetromino {
 
   moveLeft() {
     const newShape = this.createMatrixString(this.shape);
-    return new Tetromino(newShape, this.type, this.x, this.y - 1, this.direction);
+    return new Tetromino(newShape, this.type, this.x, this.checkY(this.y - 1), this.direction);
+  }
+  
+  checkY(y) {
+    if (y < 0) return 0
+    return y
   }
 
   moveDown() {

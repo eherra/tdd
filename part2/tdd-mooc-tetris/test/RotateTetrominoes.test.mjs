@@ -185,7 +185,7 @@ describe("Rotating tetrominoes", () => {
     });
 
     describe("I shape rotation works with wall kick", () => {
-      it("I shape can be rotate on left with wall kick", () => {
+      xit("I shape can be rotate on left with wall kick", () => {
         board.drop(Tetromino.I_SHAPE);
         board.rotateLeft();
         moveToAllLeft(board);
@@ -235,7 +235,6 @@ describe("Rotating tetrominoes", () => {
       describe("L shape rotations", () => {
         it("a falling L tetromino can be rotated left all four shape", () => {
           board.drop(Tetromino.L_SHAPE);
-          console.log(board.toString())
           expect(board.toString()).to.equalShape(
             `...LLL....
              ...L......

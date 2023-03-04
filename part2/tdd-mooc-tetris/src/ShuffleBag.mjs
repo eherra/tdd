@@ -16,7 +16,6 @@ export class ShuffleBag {
       const shuffledArray = this.tetromoniesListAll.sort((_a, _b) => 0.5 - Math.random());
       this.tetromoniesShuffledList = [...shuffledArray]
     }
-    console.log(this.tetromoniesShuffledList)
 
     return this.tetromoniesShuffledList.pop()
   }

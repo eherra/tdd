@@ -1,15 +1,18 @@
 import lodash from "lodash";
+import { ScoringSystem } from "./ScoringSystem.mjs";
 
 export class Board {
   boardWidth;
   boardHeight;
   currentPieceFalling;
   gameboard;
+  scoringSystem
 
-  constructor(width, height) {
+  constructor(width, height, level) {
     this.boardWidth = width;
     this.boardHeight = height;
     this.currentPieceFalling = null;
+    this.scoringSystem =  new ScoringSystem(level)
     this.gameboard = Array(height)
       .fill(null)
       .map(() => Array(width).fill("."));
@@ -58,6 +61,12 @@ export class Board {
         this.currentPieceFalling.shape[0].length -
         1;
       if (
+        this.currentPieceFalling.type === "I" &&
+        this.currentPieceFalling.direction === "left"
+      ) {
+        yToCheck += 1;
+      }
+      if (
         this.isSpaceFreeForMoveSide(
           this.currentPieceFalling.x,
           yToCheck,
@@ -79,6 +88,7 @@ export class Board {
       if (this.currentPieceFalling.x === 0) {
         xToCheck -= 1;
       }
+
       if (
         this.isSpaceFreeForMove(
           xToCheck,
@@ -90,6 +100,7 @@ export class Board {
       } else {
         this.drawShapeToBoard(this.currentPieceFalling);
         this.currentPieceFalling = null;
+        this.checkFullRowsAndRemove();
       }
     }
   }
@@ -108,7 +119,7 @@ export class Board {
         pieceShape[i].includes("Z") ||
         pieceShape[i].includes("L") ||
         pieceShape[i].includes("J") ||
-        pieceShape[i].includes("O") 
+        pieceShape[i].includes("O")
       ) {
         return pieceShape.length - i - 1;
       }
@@ -142,6 +153,17 @@ export class Board {
         );
       }
 
+      if (type == "O") {
+        return currentBoard[x][y + 1] === "." && currentBoard[x][y + 2] === ".";
+      }
+
+      if (type == "I" && this.currentPieceFalling.direction === "up") {
+        console.log(this.currentPieceFalling)
+
+        console.log(currentBoard[x][y])
+        return currentBoard[x][y] === "."
+      }
+
       return currentBoard[x][y] === ".";
     }
     return false;
@@ -161,12 +183,11 @@ export class Board {
       if (type === "T") {
         return (
           currentBoard[x][y] === "." && currentBoard[x + 1][y] === "."
-          //currentBoard[x + 2][y] === "." think this thru -> might fail if T shape is upside down
         );
       }
 
       if (type === "I") {
-        if (this.currentPieceFalling.type === "up") {
+        if (this.currentPieceFalling.direction === "left") {
           return currentBoard[x + 1][y] === ".";
         }
         return (
@@ -180,6 +201,22 @@ export class Board {
       return currentBoard[x][y] === ".";
     }
     return false;
+  }
+
+  checkFullRowsAndRemove() {
+    let rowsDeletedAmount = 0;
+    for (const [index, row] of this.gameboard.entries()) {
+      if (!row.includes(".")) {
+        // remove row from index
+        this.gameboard.splice(index, 1)
+        // add row to top
+        this.gameboard.splice(0, 0, [".........."])
+        rowsDeletedAmount += 1
+      }
+    }
+    if (rowsDeletedAmount) {
+      this.scoringSystem.addRowPoints(rowsDeletedAmount);
+    }
   }
 
   getCurrentBoard() {
