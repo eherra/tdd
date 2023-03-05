@@ -165,7 +165,7 @@ describe("Rotating tetrominoes", () => {
       moveToAllRight(board);
       board.rotateRight();
       expect(board.toString()).to.equalShape(
-        `........T.
+          `........T.
            .......TT.
            ........T.
            ..........
@@ -175,7 +175,7 @@ describe("Rotating tetrominoes", () => {
       moveToAllRight(board);
       board.rotateRight();
       expect(board.toString()).to.equalShape(
-        `........T.
+          `........T.
            .......TTT
            ..........
            ..........

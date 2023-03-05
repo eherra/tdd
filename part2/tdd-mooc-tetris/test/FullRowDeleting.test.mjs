@@ -37,6 +37,7 @@ function create4RowBoardOnSide(board) {
     board.drop(Tetromino.I_SHAPE);
     moveToAllLeft(board);
     fallToBottom(board);
+    
     board.drop(Tetromino.I_SHAPE);
     board.moveRight();
     fallToBottom(board);
@@ -162,6 +163,39 @@ describe("Full row deleting", () => {
           IIIIIIII..`
       );
 
-      // delete here with I shape all
+      board.drop(Tetromino.I_SHAPE)
+      board.rotateLeft()
+
+      moveToAllRight(board)
+      board.moveLeft()
+      fallToBottom(board)
+
+      board.drop(Tetromino.I_SHAPE)
+      board.rotateLeft()
+      moveToAllRight(board)
+
+      expect(board.toString()).to.equalShape(
+        `.........I
+          .........I
+          .........I
+          .........I
+          IIIIIIIII.
+          IIIIIIIII.
+          IIIIIIIII.
+          IIIIIIIII.`
+      );
+      fallToBottom(board)
+
+      expect(board.toString()).to.equalShape(
+           `..........
+            ..........
+            ..........
+            ..........
+            ..........
+            ..........
+            ..........
+            ..........
+            `
+      );
   });
 });

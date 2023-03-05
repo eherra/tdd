@@ -9,7 +9,7 @@ export class TShape {
       ....`,
       "T",
       x,
-      y,
+      this.checkWallKick(y),
       "up"
     );
   }
@@ -22,7 +22,7 @@ export class TShape {
        ....`,
       "T",
       x,
-      y,
+      this.checkWallKick(y),
       "down"
     );
   }
@@ -48,14 +48,14 @@ export class TShape {
        ....`,
       "T",
       x,
-      y,
+      this.checkWallKick(y),
       "right"
     );
   }
 
   static checkWallKick(y) {
     if (y < 0) return 0;
-    if (y > 9) return 9;
+    if (y > 7) return 7;
     return y;
   }
 }

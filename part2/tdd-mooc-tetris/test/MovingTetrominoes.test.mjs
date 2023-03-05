@@ -139,7 +139,7 @@ describe("Falling blocks", () => {
 
   it("it cannot be moved down beyond the board", () => {
     board.drop(Tetromino.T_SHAPE);
-    fallToBottom(board);
+    fallToBottom(board)
     expect(board.toString()).to.equalShape(
       `..........
          ..........
