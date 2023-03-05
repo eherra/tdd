@@ -8,8 +8,8 @@ export const createGameOfLifeGridWithPattern = (pattern, gridSize) => {
 };
 
 const drawPatternToGrid = (grid, pattern) => {
-  let startX = grid.length / 2 - 1;
-  let startY = grid.length / 2 - 1;
+  let startX = Math.floor(grid.length / 2) - 1;
+  let startY = Math.floor(grid.length / 2) - 1;
   const splittedPattern = pattern.split("$");
   for (const textRow of splittedPattern) {
     [...textRow].forEach((char, index) => {
