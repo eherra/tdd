@@ -31,6 +31,9 @@ Other examples of commands:
 
     node src/cliApp.mjs -t -it 12 -gs 50 -f /block.rle
 
+> Note: the app assumes that the `rle` string e.g. in [/herschel.rle](https://github.com/eherra/tdd/blob/main/part6/GameOfLifeCLI/patterns/herschel.rle#L5) is located at the last row of the rle file.
+
+> Note 2: if using some rle strings which requires bigger canvas a.k.a grid -> remember to add higher gridSize with `-gs` flag.
 
 ## Developing
 
