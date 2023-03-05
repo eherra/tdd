@@ -7,20 +7,19 @@ export class Board {
   currentPieceFalling;
   gameboard;
   scoringSystem;
-  moves;
 
   constructor(width, height, level) {
     this.boardWidth = width;
     this.boardHeight = height;
     this.currentPieceFalling = null;
     this.scoringSystem = new ScoringSystem(level);
-    this.gameboard = this.initEmptyGameboard(height, width)
+    this.gameboard = this.initEmptyGameboard(height, width);
   }
 
   initEmptyGameboard(height, width) {
     return Array(height)
-    .fill(null)
-    .map(() => Array(width).fill("."));
+      .fill(null)
+      .map(() => Array(width).fill("."));
   }
 
   drop(tetromino) {
@@ -33,7 +32,7 @@ export class Board {
 
   tick() {
     if (this.currentPieceFalling) {
-      this.moveDown();
+      this.moveDown(false);
     }
   }
 
@@ -43,6 +42,7 @@ export class Board {
         ...this.currentPieceFalling,
         y: this.currentPieceFalling.y - 1,
       };
+
       if (this.isValidMove(positionToCheck)) {
         this.currentPieceFalling = this.currentPieceFalling.moveLeft();
       }
@@ -61,7 +61,7 @@ export class Board {
     }
   }
 
-  moveDown() {
+  moveDown(isSoftTopMove) {
     if (this.currentPieceFalling) {
       const positionToCheck = {
         ...this.currentPieceFalling,
@@ -69,6 +69,9 @@ export class Board {
       };
       if (this.isValidMove(positionToCheck)) {
         this.currentPieceFalling = this.currentPieceFalling.moveDown();
+        if (isSoftTopMove) {
+          this.scoringSystem.addSoftDropPoints();
+        }
       } else {
         this.drawShapeToBoard(this.gameboard);
         this.checkFullRowsAndRemove();
@@ -79,13 +82,19 @@ export class Board {
 
   rotateRight() {
     if (this.currentPieceFalling) {
-      this.currentPieceFalling = this.currentPieceFalling.rotateRight();
+      const rotatedPiece = this.currentPieceFalling.rotateRight();
+      if (this.isValidMove(rotatedPiece)) {
+        this.currentPieceFalling = rotatedPiece;
+      }
     }
   }
 
   rotateLeft() {
     if (this.currentPieceFalling) {
-      this.currentPieceFalling = this.currentPieceFalling.rotateLeft();
+      const rotatedPiece = this.currentPieceFalling.rotateLeft();
+      if (this.isValidMove(rotatedPiece)) {
+        this.currentPieceFalling = rotatedPiece;
+      }
     }
   }
 
@@ -126,6 +135,7 @@ export class Board {
     if (this.isFirstRowEmpty(positionToCheck.shape[0])) {
       positionToCheck.shape.splice(0, 1);
     }
+
     return positionToCheck.shape.every((row, xIndex) => {
       return row.every((value, yIndex) => {
         let y = positionToCheck.y + yIndex;

@@ -26,6 +26,10 @@ export class ScoringSystem {
     }
   }
 
+  addSoftDropPoints() {
+    this.points += 1;
+  }
+
   getPoints() {
     return this.points;
   }

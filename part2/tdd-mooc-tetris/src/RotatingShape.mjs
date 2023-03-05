@@ -4,7 +4,7 @@ export class RotatingShape {
   constructor(type) {
     this.shape = this.initShapeAs2DArray(type);
   }
-  
+
   initShapeAs2DArray(shape) {
     const splitted = shape
       .split("\n")

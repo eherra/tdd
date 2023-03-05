@@ -14,6 +14,24 @@ function moveToAllRight(board) {
   }
 }
 
+function fallToBottom(board) {
+  for (let i = 0; i < 9; i++) {
+    board.moveDown();
+  }
+}
+
+function create4RowBoard(board) {
+  for (let i = 0; i < 4; i++) {
+    board.drop(Tetromino.I_SHAPE);
+    moveToAllLeft(board);
+    fallToBottom(board);
+
+    board.drop(Tetromino.I_SHAPE);
+    moveToAllRight(board);
+    fallToBottom(board);
+  }
+}
+
 describe("Rotating tetrominoes", () => {
   let board;
   beforeEach(() => {
@@ -165,7 +183,7 @@ describe("Rotating tetrominoes", () => {
       moveToAllRight(board);
       board.rotateRight();
       expect(board.toString()).to.equalShape(
-          `........T.
+        `........T.
            .......TT.
            ........T.
            ..........
@@ -175,7 +193,7 @@ describe("Rotating tetrominoes", () => {
       moveToAllRight(board);
       board.rotateRight();
       expect(board.toString()).to.equalShape(
-          `........T.
+        `........T.
            .......TTT
            ..........
            ..........
@@ -185,7 +203,7 @@ describe("Rotating tetrominoes", () => {
     });
 
     describe("I shape rotation works with wall kick", () => {
-      xit("I shape can be rotate on left with wall kick", () => {
+      it("I shape can be rotate on left with wall kick", () => {
         board.drop(Tetromino.I_SHAPE);
         board.rotateLeft();
         moveToAllLeft(board);
@@ -215,20 +233,20 @@ describe("Rotating tetrominoes", () => {
         moveToAllRight(board);
         expect(board.toString()).to.equalShape(
           `.........I
-               .........I
-               .........I
-               .........I
-               ..........
-               ..........`
+          .........I
+          .........I
+          .........I
+          ..........
+          ..........`
         );
         board.rotateRight();
         expect(board.toString()).to.equalShape(
           `......IIII
-               ..........
-               ..........
-               ..........
-               ..........
-               ..........`
+            ..........
+            ..........
+            ..........
+            ..........
+            ..........`
         );
       });
 
@@ -330,7 +348,7 @@ describe("Rotating tetrominoes", () => {
                ..........
                ..........`
             );
-  
+
             board.rotateLeft();
             expect(board.toString()).to.equalShape(
               `...S......
@@ -354,7 +372,7 @@ describe("Rotating tetrominoes", () => {
                ..........
                ..........`
             );
-  
+
             board.rotateLeft();
             expect(board.toString()).to.equalShape(
               `.....Z....
@@ -366,6 +384,66 @@ describe("Rotating tetrominoes", () => {
             );
           });
         });
+      });
+    });
+
+    describe("Rotation doesnt execute when no spaces", () => {
+      it("L shape will not rotate to left when no space", () => {
+        create4RowBoard(board);
+
+        expect(board.toString()).to.equalShape(
+          `..........
+          ..........
+          IIII..IIII
+          IIII..IIII
+          IIII..IIII
+          IIII..IIII`
+        );
+
+        board.drop(Tetromino.L_SHAPE);
+        board.rotateLeft();
+        board.moveDown();
+
+        // should not rotate
+        board.rotateLeft();
+        expect(board.toString()).to.equalShape(
+          `..........
+          ....L.....
+          IIIIL.IIII
+          IIIILLIIII
+          IIII..IIII
+          IIII..IIII`
+        );
+      });
+
+      it("Z shape will not rotate to right when no space", () => {
+        create4RowBoard(board);
+
+        expect(board.toString()).to.equalShape(
+          `..........
+          ..........
+          IIII..IIII
+          IIII..IIII
+          IIII..IIII
+          IIII..IIII`
+        );
+
+        board.drop(Tetromino.Z_SHAPE);
+        board.rotateLeft();
+        console.log(board.toString())
+        board.moveDown();
+        board.moveDown();
+
+        // should not rotate
+        board.rotateRight();
+        expect(board.toString()).to.equalShape(
+          `..........
+          ..........
+          IIII.ZIIII
+          IIIIZZIIII
+          IIIIZ.IIII
+          IIII..IIII`
+        );
       });
     });
   });

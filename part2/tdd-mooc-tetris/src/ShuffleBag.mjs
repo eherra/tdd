@@ -13,10 +13,12 @@ export class ShuffleBag {
 
   draw() {
     if (!this.tetromoniesShuffledList.length) {
-      const shuffledArray = this.tetromoniesListAll.sort((_a, _b) => 0.5 - Math.random());
-      this.tetromoniesShuffledList = [...shuffledArray]
+      const shuffledArray = this.tetromoniesListAll.sort(
+        (_a, _b) => 0.5 - Math.random()
+      );
+      this.tetromoniesShuffledList = [...shuffledArray];
     }
 
-    return this.tetromoniesShuffledList.pop()
+    return this.tetromoniesShuffledList.pop();
   }
 }

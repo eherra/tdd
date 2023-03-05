@@ -108,43 +108,50 @@ export class Tetromino {
 
   moveRight() {
     const newShape = this.createMatrixString(this.shape);
-    return new Tetromino(newShape, this.type, this.x, this.y + 1, this.direction);
+    return new Tetromino(
+      newShape,
+      this.type,
+      this.x,
+      this.y + 1,
+      this.direction
+    );
   }
 
   moveLeft() {
     const newShape = this.createMatrixString(this.shape);
-    return new Tetromino(newShape, this.type, this.x, this.checkY(this.y - 1), this.direction);
-  }
-  
-  checkY(y) {
-    if (y < 0) return 0
-    return y
+    return new Tetromino(
+      newShape,
+      this.type,
+      this.x,
+      this.y - 1,
+      this.direction
+    );
   }
 
   moveDown() {
     const newShape = this.createMatrixString(this.shape);
-    return new Tetromino(newShape, this.type, this.x + 1, this.y, this.direction);
+    return new Tetromino(
+      newShape,
+      this.type,
+      this.x + 1,
+      this.y,
+      this.direction
+    );
   }
 
-  createMatrixString(shapeToCreate) {
-    let shape = "";
-    for (let row = 0; row < shapeToCreate.length; row++) {
-      for (let column = 0; column < shapeToCreate[row].length; column++) {
-        shape += shapeToCreate[row][column];
-      }
-      shape += "\n";
-    }
-    return shape;
+  checkY(y) {
+    if (y < 0) return 0;
+    return y;
   }
 
   rotateRight() {
     if (this.type === "O") return OShape.getOShape();
     if (this.type === "I") return this.rotateIShape();
-    if (this.type === "S") return this.rotateSShape()
-    if (this.type === "Z") return this.rotateZShape()
+    if (this.type === "S") return this.rotateSShape();
+    if (this.type === "Z") return this.rotateZShape();
     if (this.type === "T") return this.rotateTShape(true);
-    if (this.type === "L") return this.rotateLShape(true)
-    if (this.type === "J") return this.rotateJShape(true)
+    if (this.type === "L") return this.rotateLShape(true);
+    if (this.type === "J") return this.rotateJShape(true);
 
     return this;
   }
@@ -152,11 +159,11 @@ export class Tetromino {
   rotateLeft() {
     if (this.type === "O") return OShape.getOShape();
     if (this.type === "I") return this.rotateIShape();
-    if (this.type === "S") return this.rotateSShape()
-    if (this.type === "Z") return this.rotateZShape()
+    if (this.type === "S") return this.rotateSShape();
+    if (this.type === "Z") return this.rotateZShape();
     if (this.type === "T") return this.rotateTShape(false);
-    if (this.type === "L") return this.rotateLShape(false)
-    if (this.type === "J") return this.rotateJShape(false)
+    if (this.type === "L") return this.rotateLShape(false);
+    if (this.type === "J") return this.rotateJShape(false);
 
     return this;
   }
@@ -248,17 +255,27 @@ export class Tetromino {
     }
   }
 
-
   rotateIShape() {
-    return IShape.rotateIShape(this.x, this.y, this.direction)
+    return IShape.rotateIShape(this.x, this.y, this.direction);
   }
 
   rotateZShape() {
-    return ZShape.rotateZShape(this.x, this.y, this.direction)
+    return ZShape.rotateZShape(this.x, this.y, this.direction);
   }
 
   rotateSShape() {
-    return SShape.rotateSShape(this.x, this.y, this.direction)
+    return SShape.rotateSShape(this.x, this.y, this.direction);
+  }
+
+  createMatrixString(shapeToCreate) {
+    let shape = "";
+    for (let row = 0; row < shapeToCreate.length; row++) {
+      for (let column = 0; column < shapeToCreate[row].length; column++) {
+        shape += shapeToCreate[row][column];
+      }
+      shape += "\n";
+    }
+    return shape;
   }
 
   toString() {

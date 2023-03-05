@@ -137,6 +137,20 @@ describe("Falling blocks", () => {
     );
   });
 
+  it("Z shape cannot be moved right beyond the board", () => {
+    board.drop(Tetromino.Z_SHAPE);
+    moveToAllRight(board);
+
+    expect(board.toString()).to.equalShape(
+        `.......ZZ.
+         ........ZZ
+         ..........
+         ..........
+         ..........
+         ..........`
+    );
+  });
+
   it("it cannot be moved down beyond the board", () => {
     board.drop(Tetromino.T_SHAPE);
     fallToBottom(board)

@@ -42,11 +42,11 @@ describe("Falling blocks", () => {
 
   
   describe("When a block reaches the bottom", () => {
-    // beforeEach(() => {
-    //   board.drop(new Block("X"));
-    //   board.tick();
-    //   board.tick();
-    // });
+    beforeEach(() => {
+      board.drop(new Block("X"));
+      board.tick();
+      board.tick();
+    });
 
     xit("it is still moving on the last row", () => {
       expect(board.toString()).to.equalShape(

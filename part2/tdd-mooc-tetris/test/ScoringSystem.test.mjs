@@ -48,4 +48,25 @@ describe("Scoring System tests", () => {
       expect(scoringSystem.getPoints()).to.equal(6560);
     });
   });
+
+  describe("Softop points", () => {
+    it("When goind down 3 times, points should go up by 3", () => {
+      scoringSystem = new ScoringSystem(0);
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();
+      expect(scoringSystem.getPoints()).to.equal(3);
+    });
+
+    it("When goind down 5 times on level 3, points should go up by 5 ", () => {
+      scoringSystem = new ScoringSystem(3);
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();
+      scoringSystem.addSoftDropPoints();    
+
+      expect(scoringSystem.getPoints()).to.equal(5);
+    });
+  });
 });
